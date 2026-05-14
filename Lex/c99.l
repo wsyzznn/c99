@@ -3,16 +3,30 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "c99.tab.hpp"
+/* 与词法组约定：记号与 YYSTYPE 见 y.tab.h（名称与 c99.y 中 %token 一致） */
+#include "y.tab.h"
 #include "symbol.h"
 
-int column = 0;
-int line_num = 1;
+/* 关键：删除你之前手动写的 extern int yyinput(void); */
+/* 也不要手动定义 #define input() yyinput() */
 
-static void count(void);
-static void comment(void);
-static int check_type(void);
+int column = 0;
+extern int line_num; 
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+    static void count(void);
+    static void comment(void);
+    static int check_type(void);
+#ifdef __cplusplus
+}
+#endif
 %}
+
+/* 增加选项 */
+%option noyywrap
+%option yylineno
 
 O   [0-7]
 D   [0-9]
@@ -103,10 +117,6 @@ WS  [ \t\v\f]
 
 %%
 
-int yywrap(void) {
-    return 1;
-}
-
 static void comment(void) {
     int c;
 
@@ -148,6 +158,8 @@ static void comment(void) {
 
 static void count(void) {
     int i;
+    int fl = line_num;
+    int fc = column;
 
     for (i = 0; yytext[i] != '\0'; i++) {
         if (yytext[i] == '\n') {
@@ -159,6 +171,10 @@ static void count(void) {
             column++;
         }
     }
+    yylloc.first_line = fl;
+    yylloc.first_column = fc;
+    yylloc.last_line = line_num;
+    yylloc.last_column = column;
 }
 
 static int check_type(void) {

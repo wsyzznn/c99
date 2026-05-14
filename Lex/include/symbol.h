@@ -4,7 +4,7 @@
 /* 1. 符号节点结构体 */
 typedef struct Symbol {
     char *name;   /* 符号名称，例如 "size_t" 或 "my_variable" */
-    int type;     /* 符号类型，建议后续与 c99.tab.hpp 中的 Token ID 对应，比如 TYPE_NAME */
+    int type;     /* 符号类型，建议与 y.tab.h 中 yytokentype 对应，例如 TYPE_NAME（可选） */
     int scope;    /* 作用域层级 */
 } Symbol;
 
