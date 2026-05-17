@@ -39,6 +39,12 @@ ASTNode* ast_var(char* name) {
     return node;
 }
 
+ASTNode* ast_string(char* lit) {
+    ASTNode* node = create_node(AST_STRING);
+    node->str = lit ? strdup(lit) : NULL;
+    return node;
+}
+
 ASTNode* ast_binop(char op, ASTNode* lhs, ASTNode* rhs) {
     ASTNode* node = create_node(AST_BINOP);
     node->bin.op = op;
@@ -77,6 +83,17 @@ ASTNode* ast_while(ASTNode* cond, ASTNode* body) {
     return node;
 }
 
+ASTNode* ast_do_while(ASTNode* body, ASTNode* cond) {
+    ASTNode* node = create_node(AST_DO_WHILE);
+    node->sw.body = body;
+    node->sw.cond = cond;
+    return node;
+}
+
+ASTNode* ast_continue(void) {
+    return create_node(AST_CONTINUE);
+}
+
 ASTNode* ast_for(ASTNode* init, ASTNode* cond, ASTNode* post, ASTNode* body) {
     ASTNode* node = create_node(AST_FOR);
     node->sf.init = init;
@@ -98,6 +115,7 @@ void ast_free(ASTNode* node) {
     if (!node) return;
     
     if (node->type == AST_VAR) free(node->varname);
+    if (node->type == AST_STRING) free(node->str);
     if (node->type == AST_CALL) {
         if (node->call.fname) free(node->call.fname);
         if (node->call.args) free(node->call.args);

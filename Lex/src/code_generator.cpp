@@ -74,7 +74,8 @@ void generate_lex_yy_c(
     out << "static int  yy_buf_pos = 0;\n";
     out << "static int  yy_buf_len = 0;\n\n";
     out << "char yytext[YY_BUF_SIZE];\n";
-    out << "int  yyleng = 0;\n\n";
+    out << "int  yyleng = 0;\n";
+    out << "int yywrap(void) { return 1; }\n\n";
 
     /* ===== input() / unput() ===== */
     out << "static int input(void) {\n";

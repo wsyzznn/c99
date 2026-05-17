@@ -1,28 +1,14 @@
 /* test_lexer.c - Minimal driver for generated lex.yy.c */
 #include <stdio.h>
 
-/* Build tip: compile with -DASTNode=void if needed by c99.tab.hpp. */
-#ifndef ASTNode
-typedef void ASTNode;
-#endif
-
-#include "c99.tab.hpp"
-#include "include/symbol.h"
+#include "y.tab.h"
 
 extern int yylex(void);
 extern FILE *yyin;
 extern char yytext[];
 
 #ifndef TEST_LEXER_USE_REAL_YYLVAL
-YYSTYPE yylval;
-#endif
-
-#ifndef TEST_LEXER_USE_REAL_SYMBOL
-void symbol_table_init(void) {}
-void symbol_insert(Symbol *symbol) { (void)symbol; }
-Symbol* symbol_lookup(const char *name) { (void)name; return NULL; }
-void symbol_enter_scope(void) {}
-void symbol_exit_scope(void) {}
+/* 默认使用 ytab_runtime.c 中的定义；单文件调试可定义 TEST_LEXER_USE_REAL_YYLVAL 并自行提供 */
 #endif
 
 int main(int argc, char *argv[]) {

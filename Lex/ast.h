@@ -48,12 +48,15 @@ struct ASTNode {
 ASTNode* ast_int(int val);
 ASTNode* ast_double(double val);
 ASTNode* ast_var(char* name);
+ASTNode* ast_string(char* lit);
 ASTNode* ast_binop(char op, ASTNode* lhs, ASTNode* rhs);
 ASTNode* ast_assign(ASTNode* l, ASTNode* r);
 ASTNode* ast_call(char* name, ASTNode** arguments, int arg_count);
 ASTNode* ast_if(ASTNode* cond, ASTNode* then_s, ASTNode* else_s);
 ASTNode* ast_while(ASTNode* cond, ASTNode* body);
+ASTNode* ast_do_while(ASTNode* body, ASTNode* cond);
 ASTNode* ast_for(ASTNode* init, ASTNode* cond, ASTNode* post, ASTNode* body);
+ASTNode* ast_continue(void);
 ASTNode* ast_compound(ASTNode** list, int count);
 void ast_free(ASTNode* node);
 
